@@ -143,7 +143,7 @@ def DBedit(name: str) -> None:
         conn.close()
 
 
-def DBsearch(mode: str, data: str) -> str:
+def DBsearch(mode: str, data: str) -> None:
     """查詢資料庫指定資料"""
     try:
         cursor.execute(f"SELECT * FROM members WHERE {mode}=? ", (mode, data))
