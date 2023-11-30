@@ -5,7 +5,8 @@ conn = sqlite3.connect("wanghong.db")
 cursor = conn.cursor()
 
 
-def menu():
+def menu():  # 選單建立
+    """列印選單"""
     print(
         """
     ---------- 選單 ----------
@@ -21,7 +22,7 @@ def menu():
     )
 
 
-def check(account, password: str) -> bool:
+def check(account, password: str) -> bool:  # 帳密判斷
     """json.load() 讀取 JSON 檔案，判斷密碼是否正確"""
     with open("pass.json", "r", encoding="Big5") as f:
         data = json.load(f)
@@ -45,7 +46,7 @@ def DBcreate() -> None:
         conn.close()
 
 
-def DBimport() -> None:     # 未完成
+def DBimport() -> None:     # 未完成，匯入資料庫待測試
     """資料讀取，匯入資料庫"""
     try:
         with open("members.txt", "r", encoding="UTF-8") as f:
