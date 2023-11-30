@@ -12,6 +12,8 @@ else:
         menu()
         select = input("請輸入您的選擇 [0-7]: ")
         match select:
+            case None:
+                break
             case 0:
                 break
             case 1:
@@ -37,4 +39,4 @@ else:
             case 7:
                 DBTableDelete()
             case _:
-                print("無效的選擇")
+                print("=>無效的選擇")
