@@ -1,4 +1,5 @@
-from lib import check, menu
+from lib import DBcreate, DBimport, DBAll, DBnew, DBedit
+from lib import DBTableDelete, DBsearch, check, menu
 
 
 Account = input("請輸入帳號：")
@@ -14,19 +15,26 @@ else:
             case 0:
                 break
             case 1:
-                print("OK")
+                DBcreate()
             case 2:
-                print("OK")
+                DBimport()
             case 3:
-                print("OK")
+                DBAll()
             case 4:
-                print("OK")
+                DBnew()
             case 5:
-                print("OK")
+                name = input("請輸入想修改記錄的姓名: ")
+                if name is None:
+                    print("=>必須指定姓名才可修改記錄")
+                else:
+                    DBedit(name)
             case 6:
-                print("OK")
+                phone = input("請輸入想查詢記錄的手機: ")
+                if phone is None:
+                    print("=>必須指定手機才可查詢記錄")
+                else:
+                    DBsearch("mphone", phone)
             case 7:
-                print("OK")
+                DBTableDelete()
             case _:
                 print("無效的選擇")
-
