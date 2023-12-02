@@ -165,7 +165,7 @@ def DBsearch(mode: str, data: str) -> None:
     conn.close()
 
 
-def DBTableDelete():
+def DBTableDelete() -> None:
     """刪除資料表所有資料"""
     try:
         cursor.execute("DELETE FROM  members")
