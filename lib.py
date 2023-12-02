@@ -12,8 +12,10 @@ except IOError:  # 檔案讀取錯誤
     print("讀取失敗")
 except (EOFError, KeyboardInterrupt):  # 例: ctrl + c
     print("使用者中斷程式")
+except BaseException:
+    print("發生預期外的錯誤")
 else:
-    def menu():  # 完成
+    def menu() -> None:  # 完成
         """列印選單"""
         print()
         print("-" * 10 + " 選單 " + "-" * 10)
@@ -51,7 +53,7 @@ else:
         else:
             print("=>資料庫已建立")
 
-    def DBimport(conn: object, cursor: object) -> None:  # 完成
+    def DBimport(conn: sqlite3.Connection, cursor: sqlite3.Cursor) -> None:
         """資料讀取，匯入資料庫"""
         cont = 0
         try:
@@ -63,9 +65,11 @@ else:
                 )
                 cont += cursor.rowcount
             conn.commit()
-            print(f"=>異動 {cont} 筆記錄")
+
         except sqlite3.Error as error:
             print(f"執行 INSERT 操作時發生錯誤：{error}")
+        else:
+            print(f"=>異動 {cont} 筆記錄")
 
     def DBAll(cursor: object) -> None:  # 完成
         """抓取資料庫所有資料"""
@@ -142,8 +146,8 @@ else:
         """刪除資料表所有資料"""
         try:
             cursor.execute("DELETE FROM  members")
+            conn.commit()
         except sqlite3.Error as error:
             print(f"執行 DELETE 操作時發生錯誤：{error}")
         else:
             print(f"=>異動 {cursor.rowcount} 筆記錄")
-            conn.commit()

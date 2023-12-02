@@ -8,7 +8,6 @@ DB_NAME = "wanghong.db"
 conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
 
-
 try:
     Account = input("請輸入帳號：")
     Password = input("請輸入密碼：")
@@ -50,5 +49,7 @@ try:
                     print("=>無效的選擇")
 except KeyboardInterrupt:
     print("使用者中斷程式")
+except BaseException:
+    print("發生預期外的錯誤")
 cursor.close()
 conn.close()
