@@ -37,17 +37,17 @@ else:
         for i in range(len(UserData)):
             checkap = act == UserData[i]['帳號'] and pw == UserData[i]['密碼']
             if checkap is True:
-                Correct += 1
-        return True if Correct == 1 else False
+                Correct += 1  # 帳號比對信號
+        return True if Correct == 1 else False  # 回傳布林值
 
-    def DBcreate(cursor: object) -> None:  # 完成
+    def DBcreate(cursor: sqlite3.Cursor) -> None:  # 完成
         """建立資料表"""
         try:
-            cursor.execute(
+            cursor.execute(  # 建立表 members
                 """create table if not exists members
                     (iid INTEGER PRIMARY KEY, mname TEXT NOT NULL,
                     msex TEXT NOT NULL, mphone TEXT UNIQUE NOT NULL)"""
-            )
+            )  # (iid 整數 主索引值, mname 文字 不可為空)
         except sqlite3.Error as error:
             print(f"執行 INSERT 操作時發生錯誤：{error}")
         else:
@@ -63,15 +63,14 @@ else:
                         VALUES (?, ?, ?);",
                     (Datalist[i][0], Datalist[i][1], Datalist[i][2]),
                 )
-                cont += cursor.rowcount
+                cont += cursor.rowcount  # 計數異動次數
             conn.commit()
-
         except sqlite3.Error as error:
             print(f"執行 INSERT 操作時發生錯誤：{error}")
         else:
             print(f"=>異動 {cont} 筆記錄")
 
-    def DBAll(cursor: object) -> None:  # 完成
+    def DBAll(cursor: sqlite3.Cursor) -> None:  # 完成
         """抓取資料庫所有資料"""
         try:
             cursor.execute("SELECT * FROM members")
@@ -86,7 +85,7 @@ else:
         else:
             print("=>查無資料")
 
-    def DBnew(conn: object, cursor: object) -> None:  # 完成
+    def DBnew(conn: sqlite3.Connection, cursor: sqlite3.Cursor) -> None:  # 完成
         """使用者在資料庫中新增資料"""
         mname = input("請輸入姓名: ")
         msex = input("請輸入性別: ")
@@ -103,12 +102,13 @@ else:
         else:
             print(f"=>異動 {cursor.rowcount} 筆記錄")
 
-    def DBedit(conn: object, cursor: object, name: str) -> None:  # 完成
+    def DBedit(conn: sqlite3.Connection,
+               cursor: sqlite3.Cursor, name: str) -> None:  # 完成
         """修改資料庫指定資料"""
         msex = input("請輸入要改變的性別: ")
         mphone = input("請輸入要改變的手機: ")
         print("\n原資料：")
-        DBsearch(cursor, "mname", name)
+        DBsearch(cursor, "mname", name)  # 進入搜尋函式
         try:
             cursor.execute(
                 "UPDATE members SET msex=?, mphone=? WHERE mname=?;",
@@ -122,15 +122,15 @@ else:
         print("修改後資料：")
         DBsearch(cursor, "mname", name)
 
-    def DBsearch(cursor: object, mode: str, data: str) -> None:  # 完成
-        """查詢資料庫指定資料"""
+    def DBsearch(cursor: sqlite3.Cursor, mode: str, data: str) -> None:  # 完成
+        """查詢資料庫指定資料，以姓名搜尋或以電話搜尋"""
         try:
             cursor.execute(f"SELECT * FROM members WHERE {mode}=? ",
                            (data,))
-            DBdata = cursor.fetchall()
+            DBdata = cursor.fetchall()  # 抓取所有資料
         except sqlite3.Error as error:
             print(f"執行 SELECT 操作時發生錯誤：{error}")
-        if len(DBdata) > 0:
+        if len(DBdata) > 0:  # 判斷有無資料
             if mode == "mphone":
                 print("姓名　　　　性別　手機")
                 print("-----------------------------")
@@ -142,7 +142,8 @@ else:
         else:
             print("查無資料")
 
-    def DBTableDelete(conn: object, cursor: object) -> None:  # 完成
+    def DBTableDelete(conn: sqlite3.Connection,
+                      cursor: sqlite3.Cursor) -> None:  # 完成
         """刪除資料表所有資料"""
         try:
             cursor.execute("DELETE FROM  members")
